@@ -3,11 +3,10 @@ Concatenate many SLURM files
 
 See [RFC8416](https://tools.ietf.org/html/rfc8416) Simplified Local Internet Number Resource Management with the RPKI (SLURM)
 
-# usage
+# Usage
 Just like `cat` but for SLURM files.
 ```
-$ ./slurm-cat.py slurm-1.json slurm-2.json slurm-3.json 
-...
+$ ./slurm-cat.py slurm-1.json slurm-2.json slurm-3.json > slurm-total.json
 $
 ```
 
