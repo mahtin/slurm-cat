@@ -1,0 +1,25 @@
+{
+  "slurmVersion": 1,
+  "validationOutputFilters": {
+    "prefixFilters": [
+      {
+        "prefix": "192.168.16.0/20",
+        "comment": "Prefix 192.168.16.0/20 only"
+      },
+      {
+        "asn": 65010,
+        "comment": "AS65010 only"
+      },
+      {
+        "prefix": "192.168.32.0/20",
+        "asn": 65032,
+        "comment": "Prefix 192.168.32.0/20 plus AS65032"
+      }
+    ],
+    "bgpsecFilters": []
+  },
+  "locallyAddedAssertions": {
+    "prefixAssertions": [],
+    "bgpsecAssertions": []
+  }
+}

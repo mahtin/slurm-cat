@@ -1,0 +1,33 @@
+{
+  "slurmVersion": 1,
+  "validationOutputFilters": {
+    "prefixFilters": [],
+    "bgpsecFilters": []
+  },
+  "locallyAddedAssertions": {
+    "prefixAssertions": [
+      {
+        "asn": 65001,
+        "prefix": "10.1.0.0/16",
+        "comment": "10.1.0.0/16 @ AS65001"
+      },
+      {
+        "asn": 65002,
+        "prefix": "10.2.0.0/16",
+        "maxPrefixLength": 24,
+        "comment": "10.2.0.0/16 @ AS65002 maxlen 24"
+      },
+      {
+        "asn": 65003,
+        "prefix": "10.3.0.0/16",
+        "comment": "10.3.0.0/16 @ AS65003"
+      },
+      {
+        "asn": 65004,
+        "prefix": "10.4.0.0/16",
+        "comment": "10.4.0.0/16 @ AS65004"
+      }
+    ],
+    "bgpsecAssertions": []
+  }
+}
