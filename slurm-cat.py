@@ -7,13 +7,16 @@ import json
 def read_file(filename):
 	""" read a JSON file - exit if it fails"""
 	try:
-		fd = open(filename, 'r')
-	except:
-		sys.exit('%s: failed to read file' % filename)
+		if filename == '-':
+			fd = sys.stdin
+		else:
+			fd = open(filename, 'r')
+	except (FileNotFoundError,PermissionError) as e:
+		sys.exit('%s: %s' % (filename, e))
 	try:
 		j = json.load(fd)
-	except:
-		sys.exit('%s: file has bad json format' % filename)
+	except Exception as e:
+		sys.exit('%s: %s' % (filename, e))
 	fd.close()
 	return j
 
@@ -37,9 +40,12 @@ def doit(args):
 		# basic test for JSON success done here
 		j = read_file(filename)
 
-		# This code is for SMURM version 1
-		if j['slurmVersion'] != 1:
-			sys.exit('%s: SLURM file is not version 1' % filename)
+		# This code is for SLURM version 1
+		try:
+			if j['slurmVersion'] != 1:
+				sys.exit('%s: SLURM file is not version 1' % filename)
+		except KeyError as e:
+			sys.exit('%s: SLURM file has bad format, %s missing' % (filename, e))
 
 		# This mainly confirms the SLURM format is correct as per RFC8416
 		# each section MUST exist
@@ -47,22 +53,17 @@ def doit(args):
 			validationOutputFilters = j['validationOutputFilters']
 			prefixFilters = validationOutputFilters['prefixFilters']
 			bgpsecFilters = validationOutputFilters['bgpsecFilters']
-
 			locallyAddedAssertions = j['locallyAddedAssertions']
 			prefixAssertions = locallyAddedAssertions['prefixAssertions']
 			bgpsecAssertions = locallyAddedAssertions['bgpsecAssertions']
-		except:
-			sys.exit('%s: SLURM file has bad format' % filename)
+		except KeyError as e:
+			sys.exit('%s: SLURM file has bad format, %s missing' % (filename, e))
 
-		# if the section is empty - nothing is summed
-		for element in prefixFilters:
-			result['validationOutputFilters']['prefixFilters'] += [element]
-		for element in bgpsecFilters:
-			result['validationOutputFilters']['bgpsecFilters'] += [element]
-		for element in prefixAssertions:
-			result['locallyAddedAssertions']['prefixAssertions'] += [element]
-		for element in bgpsecAssertions:
-			result['locallyAddedAssertions']['bgpsecAssertions'] += [element]
+		# throw these values into the result
+		result['validationOutputFilters']['prefixFilters'] += prefixFilters
+		result['validationOutputFilters']['bgpsecFilters'] += bgpsecFilters
+		result['locallyAddedAssertions']['prefixAssertions'] += prefixAssertions
+		result['locallyAddedAssertions']['bgpsecAssertions'] += bgpsecAssertions
 
 	# the no sorting option could help with debug
 	print(json.dumps(result, indent=4, sort_keys=False))
@@ -72,7 +73,8 @@ def main(args=None):
 	if args is None:
 		args = sys.argv[1:]
 	if len(args) == 0:
-		sys.exit('slurm-cat: usage: slurm-cat filename [filename ...]')
+		# just like cat - use stdin
+		args = ['-']
 
 	doit(args)
 

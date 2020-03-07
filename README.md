@@ -10,6 +10,17 @@ $ ./slurm-cat.py slurm-1.json slurm-2.json slurm-3.json > slurm-total.json
 $
 ```
 
+# Sample files
+
+For testing purposes; the following files are provided. The names are self-documenting.
+
+* slurm-empty.json
+* slurm-example.json
+* slurm-prefixAssertions.json
+* slurm-prefixFilters.json
+
+The `slurm-empty.json` and `slurm-example.json` files come from RFC8416.
+
 # Notes
 As section [4.2](https://tools.ietf.org/html/rfc8416#section-4.2) of RFC8416 says:
 ```
@@ -19,3 +30,8 @@ As section [4.2](https://tools.ietf.org/html/rfc8416#section-4.2) of RFC8416 say
    files. ...
 ```
 This is simply a proof of concept code and can be used for RPKI systems where only one SLURM file is permitted (notice the **MAY** above).
+
+# License
+
+BSD License - see LICENSE.txt
+
